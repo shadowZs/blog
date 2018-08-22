@@ -311,13 +311,6 @@ exports.deleteChat = (roomId) => {
 
 exports.createChatRoomUser = (roomId) =>{
 	let table = 'user_' + roomId;
-	// let _sql = `create table if not exists ${table}(
-	// 	id INT NOT NULL AUTO_INCREMENT,
-	// 	username VARCHAR(10) NOT NULL COMMENT '用户名',
-	// 	avator VARCHAR(100) NOT NULL COMMENT '用户头像',
-	// 	PRIMARY KEY(id),
-	// )`
-
 	let _sql = `
 		create table if not exists ${table}(
 			id INT NOT NULL AUTO_INCREMENT,
@@ -327,8 +320,6 @@ exports.createChatRoomUser = (roomId) =>{
 			UNIQUE(username)
 		)
 	`
-
-	// console.log(_sql);
 	return createTable(_sql);
 }
 
@@ -350,6 +341,6 @@ exports.addchatRoomUser = (datas,roomId) => {
 
 exports.deleteChatRoomUser = (username,roomId) => {
 	let table = 'user_' + roomId;
-	let _sql = `delete from ${table} where username = ${username}`;
+	let _sql = `delete from ${table} where username = '${username}'`;
 	return query(_sql);
 }

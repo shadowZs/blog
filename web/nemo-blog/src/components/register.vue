@@ -50,9 +50,7 @@
 		},
 		mounted:function(){
 			let url = publicJs.baseUrl 
-			// publicJs.ajaxJSON('get',url,{},function(data){
-			// 	console.log(data);
-			// })
+	
 		},
 
 		methods:{
@@ -105,13 +103,14 @@
 
 					if(data.data.code == 0){
 						cookie.setCookie('userInfo',JSON.stringify(data.data.data),'max');
-						// cookie.setCookie('token',JSON.stringify(data.data.token));
 
 						localStorage.setItem('token',data.data.token);
 						location.href = '#/list';
+					}else{
+						alert(data.data.message);
 					}
 
-				})
+				}) 	
 			}
 
 

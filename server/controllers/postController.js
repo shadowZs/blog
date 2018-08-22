@@ -50,7 +50,6 @@ exports.register = async (ctx,next) => {
 }
 
 exports.login = async (ctx,next) => {
-	console.log(ctx.request.body);
 	let userName = ctx.request.body.userName;
 	let password = ctx.request.body.password;
 	let insertResult = await sql.checkUser(userName); 
@@ -103,7 +102,7 @@ exports.publish = async(ctx,next) =>{
 	let result = await sql.insertArticle(arr);
 
 	console.log(result);
-	if(result.insertId){
+	if(result.insertId && username != null){
 
 		let createComments = await sql.createComments(result.insertId); console.log(createComments);
 
@@ -111,7 +110,16 @@ exports.publish = async(ctx,next) =>{
 			code: 0,
 			message:'成功'
 		}
-	}else{
+	}
+
+	if(username == null){
+		ctx.body = {
+			code:2,
+			message:'token 已失效，请重新登录'
+		}
+	}
+
+	if(username != null && !result.insertId){
 		ctx.body = {
 			code: -1,
 			message:'操作失败'
@@ -130,21 +138,26 @@ exports.updateArticle = async(ctx,next) => {
 	let edit_time = new Date();
 	let arr = [title,content,edit_time]; console.log(arr,id);
 
-	let result = await sql.updateArticle(arr,id); console.log(result);
-	ctx.body = {
-		code: 0,
-		message: '成功',
-		data: result[0]
+	let result = await sql.updateArticle(arr,id);
+
+	if(username != null){
+		ctx.body = {
+			code: 0,
+			message: '成功',
+			data: result[0]
+		}
+	}else{
+		ctx.body = {
+			code:2,
+			message:'token已失效，请重新登录'
+		}
 	}
+	
 
 }
  
 // 获取文章
 exports.getArticleList = async(ctx,next) =>{
-	let token = ctx.request.headers.token;  
-	let username = await tokenJs.verifyToken(token);
-
-
 	let page = ctx.request.body.page;
 	let pageSize = ctx.request.body.pageSize;
 
@@ -245,7 +258,7 @@ exports.getArticleByname = async(ctx,next) =>{
 	}else{
 		ctx.body = {
 			code: -1,
-			message: 'token已过期，请重新登录'
+			message: 'token已失效，请重新登录'
 		}
 	}
 
@@ -254,7 +267,7 @@ exports.getArticleByname = async(ctx,next) =>{
 
 exports.getArticleBynameMostComments = async(ctx,next) =>{
 	let token = ctx.request.headers.token;
-	let name = await tokenJs.verifyToken(token); console.log(name);
+	let name = await tokenJs.verifyToken(token); 
 
 	let page = ctx.request.body.page;
 	let pageSize = ctx.request.body.pageSize;
@@ -281,8 +294,8 @@ exports.getArticleBynameMostComments = async(ctx,next) =>{
 		}
 	}else{
 		ctx.body = {
-			code: -1,
-			message: 'token已过期，请重新登录'
+			code: 2,
+			message: 'token已失效，请重新登录'
 		}
 	}
 
@@ -353,35 +366,46 @@ exports.submitComment = async(ctx,next) => {
 	let arr = [username,avator,time,content,reference];
 	console.log(id,arr)
 	let result = await sql.insertComment(id,arr);
-	if(result.insertId){
 
-		let getCommentsResult = await sql.checkArticle(id);
-		let comments = getCommentsResult[0].comments;
-		let points = getCommentsResult[0].points;
-		if(comments == null){
-			comments = 1
+	if(username != null){
+		if(result.insertId){
+			let getCommentsResult = await sql.checkArticle(id);
+			let comments = getCommentsResult[0].comments;
+			let points = getCommentsResult[0].points;
+			if(comments == null){
+				comments = 1
+			}else{
+				comments ++;
+			}
+
+			if(points == null){
+				points = 0;
+			} 
+			let insertResult = await sql.addPoint(id,[points,comments])
+
+
+			ctx.body = {
+				code:0,
+				message:'成功',
+			}
 		}else{
-			comments ++;
+			
+			ctx.body = {
+				code: -1,
+				message:'失败'
+			}
+
 		}
 
-		if(points == null){
-			points = 0;
-		} 
-		let insertResult = await sql.addPoint(id,[points,comments])
-
-
-		ctx.body = {
-			code:0,
-			message:'成功',
-		}
 	}else{
-		
 		ctx.body = {
-			code: -1,
-			message:'失败'
+			code: 2,
+			message:'token已失效，请重新登录'
 		}
-
 	}
+
+	
+
 }
 
 
@@ -396,9 +420,10 @@ exports.createChatRoom = async(roomId) => {
 
 
 exports.insertChat = async (roomId,datas) => {
-	let arr = [datas.username,datas.avator,datas.message,new Date(datas.create_time)]; console.log('insertArr:',arr);
-	let insertResult = await sql.insertChat(roomId,arr); console.log('insertMessage:',insertResult);
-	// let deleteResult = await sql.deleteChat(roomId);
+
+	let arr = [datas.username,datas.avator,datas.message,new Date(datas.create_time)]; 
+	let insertResult = await sql.insertChat(roomId,arr); 
+	
 
 	ctx.body = {
 		code: 0,
@@ -409,7 +434,7 @@ exports.insertChat = async (roomId,datas) => {
 // 获取列表
 exports.checkChat = async (ctx,next) =>{
 	
-	let roomId = ctx.request.body.roomId; console.log("roomId:",roomId);
+	let roomId = ctx.request.body.roomId; 
 	let checkRoom = await sql.createChatRoom(roomId);  
 	let result = await sql.checkChat(roomId); 
 
@@ -422,8 +447,7 @@ exports.checkChat = async (ctx,next) =>{
 
 
 // 聊天用户
-exports.createChatRoomUser = async () => {
-	let roomId = 'room_1';
+exports.createChatRoomUser = async (roomId) => {
 	let result = await sql.createChatRoomUser(roomId);
 	return result;
 }
@@ -440,7 +464,8 @@ exports.addChatRoomUser = async (username,avator) => {
 	let arr = [username,avator];
 	
 	let result = await sql.addchatRoomUser(arr,roomId);
-	return result;
+	let checkResult = await sql.checkChatRoomUser(roomId);
+	return checkResult;
 
 }
 
@@ -448,5 +473,8 @@ exports.addChatRoomUser = async (username,avator) => {
 
 exports.deleteChatRoomUser = async(username) => {
 	let roomId = 'room_1';
-   let result = await sql.deleteChatRoomUser(username,roomId); console.log(result);
+    let result = await sql.deleteChatRoomUser(username,roomId); 
+    let checkResult = await sql.checkChatRoomUser(roomId);
+    return checkResult;
+
 }

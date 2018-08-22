@@ -4,8 +4,7 @@ import cookie from './cookie';
 
 
 function getToken(){
-	// let token = cookie.getCookie('token'); console.log(token);
-	let token = localStorage.getItem('token');  console.log(token);
+	let token = localStorage.getItem('token'); 
 	if(token){ 
 		return token;
 	}
@@ -14,11 +13,9 @@ function getToken(){
 
 
 
-let baseUrl = 'http://localhost:3000/'
+// let baseUrl = 'http://localhost:3000/'
 // let baseUrl = 'http://116.85.48.142:3000/'; //滴滴云服务器
-// let baseUrl = 'http://47.106.171.33:3000/';  //aliyun
-// let imgUrl = 'http://116.85.48.142:1101/image/';
-
+let baseUrl = 'http://47.106.171.33:3000/';  //aliyun
 
 //插入图片
 function addImg(callback){
@@ -27,12 +24,12 @@ function addImg(callback){
 	input.type = 'file';
 	input.accept = 'image/*';
 	input.addEventListener('change',function(){
-		let file = this.files[0];  console.log(file)
+		let file = this.files[0];  
 		let formData = new FormData();
 		formData.append('file',file);
 
 
-		let url = baseUrl + 'upload'; console.log(url);
+		let url = baseUrl + 'upload'; 
 		axios({
 			method:'post',
 			url:url,
@@ -47,12 +44,10 @@ function addImg(callback){
 	input.click();
 }
 
-
+// ajax json
 function ajaxJSON (method,url,params,callback){
 	showLoadding();
-	// let userName = getUser();
 	let token = getToken(); 
-	console.log('token:',token);
 	axios({
 		method:method,
 		url:url,
@@ -60,13 +55,27 @@ function ajaxJSON (method,url,params,callback){
 		headers:{'Content-Type':'application/json',token:token}
 	}).then(function(data){
 	 	hideLoadding();
-		callback(data)
+
+	 	if(data.data.code == 0){
+	 		callback(data);
+	 	}
+
+	 	if(data.data.code == -1){
+	 		alert(data.data.message);
+	 	}
+
+	 	if(data.data.code == 2){          //code 2表示token已失效，过期或在其他地方登录
+	 		localStorage.removeItem('token'); 
+	 		alert(data.data.message);
+	 	}
+
+		
 	}).catch(function(err){
 		console.log(err);
 	})
 }
 
-
+// login 
 function ajaxLogin(method,url,params,callback){
 	axios({
 		method:method,
@@ -82,17 +91,15 @@ function ajaxLogin(method,url,params,callback){
 
 
 function showLoadding() {
-	
    let loading = '<div class="res-mask loadding"><div class="dis-table"><div class="dis-tablecell"><div class="loadEffect"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div></div>'
 	let loadingBox = document.createElement('div');
 	loadingBox.className = 'loadingBox';
 	loadingBox.innerHTML = loading;
 	document.body.appendChild(loadingBox);
 }
-
+ 
 function hideLoadding() {
 	let loading = document.querySelector('.loadingBox');
-	// $('.loadding').remove();
 	document.body.removeChild(loading);
 }
 

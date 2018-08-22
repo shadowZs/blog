@@ -21,13 +21,17 @@ exports.verifyToken = async (token) => {
 	let nowTime = Date.now();    //jwt.exp时间是按照秒来计算，而非毫秒
 
 	if(nowTime / 1000 > decode.exp){
-		let result = await sql.checkToken(token);
-		let deleteResult = await sql.deleteToken(token); 
+		
+		let deleteResult = await sql.deleteToken(token);    // 大于过期时间，表示已过期，删除数据
 
 	}else{
 
-		username = decode.username;
+		let result = await sql.checkToken(token);      //查询token是否有效，避免重复登录
 
+		if(result.length > 0){		
+			username = decode.username;
+		}
+		
 	}
 
 

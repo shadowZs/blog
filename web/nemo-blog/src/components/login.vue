@@ -41,13 +41,16 @@
 			this.getCookie();
 
 			let self = this;
-			window.addEventListener('keyup',function(event){
 
-				let e = event || window.event;
-				if(e.keyCode == 13){
-					self.loginIn();
-				}
-			})
+			// 多个事件监听会导致冲突？
+			
+			// window.addEventListener('keyup',function(event){
+
+			// 	let e = event || window.event;
+			// 	if(e.keyCode == 13){
+			// 		self.loginIn();
+			// 	}
+			// })
 		},
 
 		methods:{
@@ -82,6 +85,8 @@
 						localStorage.setItem('token',token);
 						location.href = '#/list';
 
+					}else{
+						alert(data.data.message);
 					}
 				})
 

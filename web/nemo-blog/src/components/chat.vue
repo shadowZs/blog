@@ -5,20 +5,21 @@
 			<div class="mainBox" style='height:calc( 100% - 80px);width:calc(100% - 460px)'>
 				<div class="chatBox" style='margin:20px 0;line-height:30px;height:calc(100% - 110px);border-bottom:1px solid #efefef;overflow-y:auto;'>
 					<div class="chatMessage " v-for='li in chatList' style='margin:10px 10px' >
-						<div class="chatLeft flex" v-if='li.username != username'>
-							<img :src='li.avator' class='avator'>
-							<div class="chatMain">
-								<div class="chatTime" style='margin-right:20px'>{{li.create_time | formateTime}}</div>
-								<div>{{li.message}}</div>
+						<div class="chatLeft " v-if='li.username != username'>
+							<div class="chatTime" style='text-align:center'>{{li.create_time | formateTime}}</div>	
+							<div class="chatMain flex">
+								<img :src='li.avator' class='avator'>
+								<div style='max-width:60%'>{{li.message}}</div>
 							</div>
 						</div>
 						
-						<div class="charRight flexEnd" v-if='li.username == username'>
-							<div class="chatMain" style='margin-right:20px'>
-								<div class="chatTime" style='text-align:right'>{{li.create_time | formateTime}}</div>
-								<div style='text-align:right'>{{li.message}}</div>
+						<div class="charRight " v-if='li.username == username'>
+							<div class="chatTime" style='text-align:center'>{{li.create_time | formateTime}}</div>
+							<div class="chatMain flexEnd" style='margin-right:20px'>			
+								<div style='text-align:right;margin-right:20px;max-width:60%'>{{li.message}}</div>
+								<img :src='li.avator' class='avator'>	
 							</div>
-							<img :src='li.avator' class='avator'>		
+								
 						</div>
 					
 					</div>
@@ -74,14 +75,10 @@
 			let self = this;
 
 			// this.socket = io();  //如果没有指向url,默认会连接当前页面的主机
-			this.socket = io('http://localhost:3001');
+			// this.socket = io('http://localhost:3001');
 
-			// this.socket = io('http://116.85.48.142:3001');
-			// this.socket.emit('system',`${this.username} 进入聊天室`);
-// 
-			// this.socket.emit('addUser',this.username); 
-
-			
+			this.socket = io('http://47.106.171.33:3001');  //阿里云
+		
 			this.socket.on('message',function(message){
 				self.receiveMessage(message);
 			})
@@ -135,13 +132,21 @@
 			},
 
 			sendMessage: function(message){
+				let token = localStorage.getItem('token');
 
-				let sendMessage = {message:message,username:this.username,avator:this.avator,create_time:new Date()};
-				this.socket.emit('message',sendMessage);
-				this.chatList.push(sendMessage);
-				this.input = '';		
-				this.scrollToBottom();
-				this.isKeyDown = true;
+				if(token){
+					let sendMessage = {message:message,username:this.username,avator:this.avator,create_time:new Date()};
+					this.socket.emit('message',sendMessage);
+					this.chatList.push(sendMessage);
+					this.input = '';		
+					this.scrollToBottom();
+					this.isKeyDown = true;
+				}else{
+					alert('token 已失效，请重新登录');
+					location.href = '#/login';
+				}
+
+				
 			},
 
 			send: function(){
@@ -239,8 +244,25 @@
 						s = '0' + s;
 					}
 
-					return year + '-' + month + '-' + day + ' ' +  h + ':' + m + ':' + s;
+					// return year + '-' + month + '-' + day + ' ' +  h + ':' + m + ':' + s;
+					let formateDate = null
+					let nowDate = Date.now();
+					let valTime = val.getTime();
 
+					let differMin = (nowDate - valTime) / (1000 * 60);
+
+					if(differMin < 60){
+						formateDate = m + ':' + s;
+					}else if(differMin >= 60 && differMin < 60 * 24){
+						formateDate = h + ':' + m + ':' + s;
+
+					}else if(differMin >= 60 * 24 && differMin < 60 * 24 * 30){
+						formateDate = month + '-' + day + ' ' +  h + ':' + m + ':' + s;
+					}else{
+						formateDate = year + '-' + month + '-' + day + ' ' +  h + ':' + m + ':' + s;
+					} 
+
+					return formateDate;
 				}
 			},
 

@@ -32,8 +32,7 @@
 
 		methods:{
 			getUserInfo: function(){
-				let userInfo = cookie.getCookie('userInfo'); console.log(userInfo)
-		
+				let userInfo = cookie.getCookie('userInfo'); 
 				if(userInfo){
 					this.isLogin = true
 				}else{

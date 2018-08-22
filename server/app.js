@@ -24,8 +24,8 @@ const logger = require('koa-logger');
 app.use(logger());
 
 // 错误处理z
-// const onerror = require('koa-onerror');
-// onerror(app);
+const onerror = require('koa-onerror');
+onerror(app);
 
 
 app.use(router.routes());
@@ -47,6 +47,8 @@ const CONFIG = {
 }
 
 app.use(session(CONFIG,app));
+
+const utf8 = require('utf8');  // 解决socket获取cookie编码问题
 
 //scoket.io
 let websocketServer = require('http').createServer(app.callback());
@@ -75,23 +77,18 @@ io.on('connection',async (socket) =>{
 	if(socket.request.headers.cookie){
 		let cookies = socket.request.headers.cookie;
 		userInfo = JSON.parse(cookie.getCookie(cookies,'userInfo'));
-		
-		let username = userInfo.username;
+	
+		let username = utf8.decode(userInfo.username);
 		let avator = userInfo.avator;
+		// console.log(username);
 
-		await controller.addChatRoomUser(username,avator);
+		let users = await controller.addChatRoomUser(username,avator);
 
 		socket.to(roomId).emit('system',`${username} 进入了聊天室`);
-	
-		let users = await controller.checkChatRoomUser();
-	    io.sockets.emit('userList',users);
 
-			
-		//  socket.on('system',function(data){
-		// 	// console.log('收到系统消息：',data);
-		// 	socket.to(roomId).emit('system',data);
-		
-		// })
+		console.log(`当前用户：`,users);
+
+	    io.sockets.emit('userList',users);
 
 		socket.on('message',function(data){
 			socket.to(roomId).emit('message',data);
@@ -100,9 +97,13 @@ io.on('connection',async (socket) =>{
 
 
 		socket.on('disconnect',async() =>{
-	
-			controller.deleteChatRoomUser(username);
-			let currentUsers = await controller.checkChatRoomUser(); console.log(currentUsers);
+			console.log(`${username} 离开了`)
+			let currentUsers = await controller.deleteChatRoomUser(username);
+
+			// let currentUsers = await controller.checkChatRoomUser(); 
+
+			console.log('离开后的聊天列表：',currentUsers);
+
 			socket.to(roomId).emit('system',`${username} 离开了`);
 			io.sockets.emit('userList',currentUsers);
 
