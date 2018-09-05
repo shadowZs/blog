@@ -75,9 +75,9 @@
 			let self = this;
 
 			// this.socket = io();  //如果没有指向url,默认会连接当前页面的主机
-			// this.socket = io('http://localhost:3001');
+			// this.socket = io('http://localhost:3101');
 
-			this.socket = io('http://47.106.171.33:3001');  //阿里云
+			this.socket = io('http://47.106.171.33:3101');  //阿里云
 		
 			this.socket.on('message',function(message){
 				self.receiveMessage(message);
@@ -150,8 +150,8 @@
 			},
 
 			send: function(){
-			
-				if(this.input == null || this.input == ' '){
+				this.input = this.input.replace(/(\^s*)|(\s*$)/g,''); console.log(this.input);
+				if(this.input == null || this.input == ''){
 				
 					return;
 				}

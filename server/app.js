@@ -64,9 +64,6 @@ io.use(function(socket, next){
 
 
 io.on('connection',async (socket) =>{
-	// console.log('socket is connected...');
-	// console.log(socket.id);
-
 	let roomId = 'room_' + 1;
 	socket.join(roomId);
 
@@ -80,13 +77,9 @@ io.on('connection',async (socket) =>{
 	
 		let username = utf8.decode(userInfo.username);
 		let avator = userInfo.avator;
-		// console.log(username);
-
 		let users = await controller.addChatRoomUser(username,avator);
 
 		socket.to(roomId).emit('system',`${username} 进入了聊天室`);
-
-		console.log(`当前用户：`,users);
 
 	    io.sockets.emit('userList',users);
 
@@ -95,28 +88,23 @@ io.on('connection',async (socket) =>{
 			controller.insertChat(roomId,data);
 		})
 
-
 		socket.on('disconnect',async() =>{
 			console.log(`${username} 离开了`)
 			let currentUsers = await controller.deleteChatRoomUser(username);
-
-			// let currentUsers = await controller.checkChatRoomUser(); 
-
 			console.log('离开后的聊天列表：',currentUsers);
 
 			socket.to(roomId).emit('system',`${username} 离开了`);
 			io.sockets.emit('userList',currentUsers);
 
-		})
+    	})
 
 	}	
-
 
 })
 
 
 		
-websocketServer.listen(3001);
-app.listen(3000);
-console.log(`server started at 3000`);
-console.log('socket listen at 3001');
+websocketServer.listen(3101);
+app.listen(3100);
+console.log(`server started at 3100`);
+console.log('socket listen at 3101');

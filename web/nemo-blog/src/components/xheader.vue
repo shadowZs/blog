@@ -5,7 +5,7 @@
 			<a href='#/list' class="function" :class='active == "index" ? "activeItem" : ""'>首页</a>
 			<a href='#/my' class="function" v-show='isLogin' :class='active == "my" ? "activeItem" : ""'>我的文章</a>
 			<a href='#/publish/0' class="function" v-show='isLogin' :class='active == "publish" ? "activeItem" : ""'>发表文章</a>
-			<a href='#/about' class="function" :class='active == "about" ? "activeItem" : ""'>关于</a>
+			<!-- <a href='#/about' class="function" :class='active == "about" ? "activeItem" : ""'>关于</a> -->
 			<a href='#/chat' class="function" :class='active == "chat" ? "activeItem" : ""' v-show='isLogin' >交流</a>
 			<a href='#/register' class="function" v-show='!isLogin' :class='active == "register" ? "activeItem" : ""'>注册</a>
 			<a href='#/login' class="function" v-show='!isLogin' :class='active == "login" ? "activeItem" : ""'>登录</a>

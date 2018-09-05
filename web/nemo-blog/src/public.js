@@ -13,9 +13,9 @@ function getToken(){
 
 
 
-// let baseUrl = 'http://localhost:3000/'
+// let baseUrl = 'http://localhost:3100/'
 // let baseUrl = 'http://116.85.48.142:3000/'; //滴滴云服务器
-let baseUrl = 'http://47.106.171.33:3000/';  //aliyun
+let baseUrl = 'http://47.106.171.33:3100/';  //aliyun
 
 //插入图片
 function addImg(callback){
@@ -95,12 +95,53 @@ function showLoadding() {
 	let loadingBox = document.createElement('div');
 	loadingBox.className = 'loadingBox';
 	loadingBox.innerHTML = loading;
+
+	// 滚动条应处于当前视图位置，而不是全部页面的
+	// let top = document.documentElement.scrollTop; 
+	// loadingBox.style.top = top + 'px';
+	loadingBox.style.top = 0;
+
 	document.body.appendChild(loadingBox);
 }
  
 function hideLoadding() {
 	let loading = document.querySelector('.loadingBox');
 	document.body.removeChild(loading);
+}
+
+function formateDate(val){
+	if(val){
+		val = new Date(val);
+		let year = val.getFullYear();
+		let month = val.getMonth() + 1;
+		let date = val.getDate();
+		let h = val.getHours();
+		let m = val.getMinutes();
+		let s = val.getSeconds();
+
+		if(month < 10){
+			month = '0' + month
+		}
+
+		if(date < 10){
+			date = '0' + date;
+		} 
+
+		if(h < 10){
+			h = '0' + h;
+		}
+
+		if(m < 10){
+			m = '0' + m;
+		}
+
+		if(s < 10){
+			s = '0' + s;
+		}
+
+		return year + '-' + month + '-' + date + ' ' + h + ':' + m + ':' + s;
+	}
+
 }
 
 export default {
@@ -111,4 +152,5 @@ export default {
 	ajaxLogin:ajaxLogin,
 	showLoadding:showLoadding,
 	hideLoadding:hideLoadding,
+	formateDate:formateDate,
 }

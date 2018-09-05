@@ -8,7 +8,10 @@
 						<span class='detail_title'>{{message.title}}</span>
 						<span class='spanBtn' v-show='isShowEdit' @click='toEdit'>编辑</span>
 					</div>
-					<div class="sub_detail_title">发布于{{message.create_time}}*作者{{message.username}}</div>
+					<div class="sub_detail_title"> 	
+						<span>发布于{{message.create_time}}*作者{{message.username}}</span>
+						<span>*最近编辑于：{{message.editTime}}</span>
+					</div>
 				</div>
 				
 				<div class="detailContent " v-html='message.content'>
@@ -32,9 +35,9 @@
 			</div>
 		</div>
 
-		<div class="submitComment showArea">
+		<div class="submitComment showArea" v-show='userMessage.username != null'>
 			<div class="submitCommentTitle title">添加评论</div>
-			<div class="flex">
+			<div class="flex" >
 				<img :src='userMessage.avator' class='avator'>
 				<textarea
 				  type="textarea"
@@ -76,7 +79,7 @@
 			getUserInfo: function(){
 				let userInfo = cookie.getCookie('userInfo'); 
 				if(userInfo){
-					this.userMessage = JSON.parse(userInfo); console.log(this.userMessage)
+					this.userMessage = JSON.parse(userInfo); 
 				}else{
 					// location.href = '#/login';
 				}
@@ -96,6 +99,10 @@
 					console.log(data);
 					if(data.data.code == 0){
 						self.message = data.data.data;
+						if(self.message.edit_time){
+							self.message.editTime = publicJs.formateDate(self.message.edit_time);
+						}
+
 						self.message.create_time = self.message.create_time.split('T')[0];
 						if(self.message.username == self.userMessage.username){
 							self.isShowEdit = true;

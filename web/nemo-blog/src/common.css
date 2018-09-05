@@ -56,7 +56,7 @@ body{font-size:16px;background:#e1e1e1;color:#333;width:100%;height:100%;}
 
 .showArea{margin:20px;background:#fff;padding:20px;border-radius:5px;}
 .title{padding:10px 0;color:#333;}
-.commentList{margin-bottom:16px;}
+.commentList{margin-bottom:36px;}
 .commentTitle{padding:10px 0;}
 .commentContent{line-height:30px;}
 .colorB{color:#409EFF;}
@@ -183,7 +183,7 @@ ul.pagination li:hover:not(.active) {background-color: #ddd;}
 
 
 /*loading...*/
-.loadingBox{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;}
+.loadingBox{position:absolute;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;}
 .loadding{width:100%;height:100%;}
 .dis-table { display: table; width: 100%; height: 100%; }
 .dis-tablecell { display: table-cell; vertical-align: middle; width: 100%; height: 100%; }

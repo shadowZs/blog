@@ -2,8 +2,8 @@ const sql = require('../sql/sql');
 const formateDate = require('../formateDate');
 const tokenJs = require('../token');
 // const imgUrl = 'http://116.85.48.142:3000/upload/'; //滴滴云
-const imgUrl = 'http://47.106.171.33:3000/upload/'; //阿里云
-// const imgUrl = 'http://localhost:3000/upload/';
+const imgUrl = 'http://47.106.171.33:3000/upload/others/'; //阿里云，给shujie配的博客
+// const imgUrl = 'http://localhost:3100/upload/others/';
 
 exports.upload = async (ctx,next) => {
 	let file = ctx.req.file;
@@ -19,7 +19,9 @@ exports.register = async (ctx,next) => {
 	let userName = ctx.request.body.userName;
 	let password = ctx.request.body.password;
 	let avator = ctx.request.body.avator
+	
 	// let create_time = formateDate.formateDate(new Date());
+
 	let create_time = new Date();
 
 	let checkResult = await sql.checkUser(userName); console.log(checkResult);

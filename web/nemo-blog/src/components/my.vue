@@ -19,6 +19,7 @@
 							<div class="messageShort">
 								<span>点击数：<span class="colorB">{{li.points}}</span></span>
 								<span style='margin-left:20px'>评论数：<span class="colorB">{{li.comments}}</span></span>
+								<span style='margin-left:20px' class="editTime" v-show='li.edit_time != null'>  最近编辑时间：{{li.edit_time}}</span>
 							</div>	
 						</div>
 					</div>
@@ -124,6 +125,11 @@
 							}
 						}
 					}
+
+					
+					self.list.forEach(function(item){
+						item.edit_time = publicJs.formateDate(item.edit_time);
+					})
 				})
 
 			},

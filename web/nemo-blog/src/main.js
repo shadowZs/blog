@@ -7,6 +7,9 @@ import router from './router'
 Vue.config.productionTip = false;
 import '@/common.css';
 
+var Promise = require('es6-promise-polyfill').Promise;
+
+import "babel-polyfill";
 
 // import ElementUi from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css'

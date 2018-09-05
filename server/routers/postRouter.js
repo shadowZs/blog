@@ -5,7 +5,7 @@ const controller = require('../controllers/postController')
 
 let storage = multer.diskStorage({
 	destination: (req,file,cb) => {
-		cb(null,'upload/')
+		cb(null,'upload/others/')
 	},
 
 	filename: (req,file,cb) => {
