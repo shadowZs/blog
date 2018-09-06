@@ -15,7 +15,7 @@ function getToken(){
 
 // let baseUrl = 'http://localhost:3100/'
 // let baseUrl = 'http://116.85.48.142:3000/'; //滴滴云服务器
-let baseUrl = 'http://47.106.171.33:3100/';  //aliyun
+let baseUrl = 'http://47.106.171.33:3000/';  //aliyun
 
 //插入图片
 function addImg(callback){

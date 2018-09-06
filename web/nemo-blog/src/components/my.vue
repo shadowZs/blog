@@ -11,7 +11,7 @@
 				</div>
 
 				<div class="empty" v-show='list.length == 0'>你还没有发表文章</div>
-				<div class="topic_title  topic_list flexBetween" v-show='list.length != 0' v-for='li in list' @click='toDetail(li.id)'>
+			<!-- 	<div class="topic_title  topic_list flexBetween" v-show='list.length != 0' v-for='li in list' @click='toDetail(li.id)'>
 					<div class="topic_left alignCenter">
 						<img :src='li.avator' class='avator'>
 						<div>
@@ -26,7 +26,9 @@
 
 					<div class="topic_right">{{li.create_time | formateTime}}</div>
 						
-				</div>
+				</div> -->
+
+				<message-box :list='list' @getDetail='toDetail'></message-box>
 
 				<div class="page flexEnd">
 					<!-- <el-pagination

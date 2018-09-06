@@ -6,11 +6,12 @@
 				
 				<div class="selectLi">
 					<span class="selectBtn activBtn hover" :class='active == "all" ? "isActive" : ""' @click='changeItem("all")'> 全部</span>
-				<!-- 	<span class="selectBtn hover" @click='changeItem("new")' :class='active == "new" ? "isActive" : ""'>最新</span> -->
 					<span class="selectBtn hover" @click='changeItem("most")' :class='active == "most" ? "isActive" : ""'>最多评论</span>
 				</div>
 				<div class="empty" v-show='list.length == 0'>目前还没有任何文章</div>
-				<div class="topic_title  topic_list flexBetween" v-show='list.length != 0' v-for='li in list' @click='toDetail(li.id)'>
+
+				<message-box :list='list' @getDetail='toDetail'></message-box>
+				<!-- <div class="topic_title  topic_list flexBetween" v-show='list.length != 0' v-for='li in list' @click='toDetail(li.id)'>
 					<div class="topic_left alignCenter">
 						<img :src='li.avator' class='avator'>
 						<div>
@@ -27,7 +28,7 @@
 					<div class="topic_right">{{li.create_time | formateTime}}</div>
 						
 				</div>
-
+ -->
 				<div class="page flexEnd">
 				<!-- 	<el-pagination
 					  background
@@ -55,7 +56,8 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import xheader from '@/components/xheader'
+	import xheader from '@/components/xheader';
+	import messageBox from '@/components/li'
 	import publicJs from '@/public';
 
 	export default {
@@ -138,11 +140,13 @@
 			},
 
 			toDetail: function(id){
+		
 				location.href = '#/detail/' + id;
 			}
 		},
 		components:{
 			xheader,
+			messageBox
 		},
 		watch:{
 			page:function(newVal){
@@ -155,53 +159,6 @@
 
 		},
 
-		filters:{
-			formateTime: function(val){
-	
-				if(val){
-					let nowTime = Date.now();
-					let lastTime = new Date(val).getTime();
-					let str = ''
 
-					let min = Math.ceil((nowTime - lastTime) / (1000 *  60));
-
-					let h = Math.floor(min / 60);
-
-					let d = Math.floor(h / 24);
-
-					let m = Math.floor(d / 30);
-
-					let y = Math.floor(m / 12);
-
-					// console.log(min,h,d,m,y);
-					// console.log(d > 1 && d < 30)
-
-					if(min < 60){
-						str = min + '分钟前'; 
-					}
-
-					if(h >= 1 && h < 24){
-						str = h + '小时前'; 
-					}
-
-					if(d >= 1 && d < 30){
-						str = d + '天前';  
-					}
-
-					if(m >= 1 && m < 12){  
-						str = m + '月前';   
-					} 
-
-					if(y >= 1){
-						str = y + '年前';  
-					}
-
-					return str;
-
-
-				}
-				
-			}
-		}
 	}
 </script>
