@@ -60,6 +60,7 @@
 <script type="text/javascript">
 	import xheader from '@/components/xheader'
 	import publicJs from '@/public';
+	import messageBox from '@/components/li';
 
 	export default {
 		data () {
@@ -142,6 +143,7 @@
 		},
 		components:{
 			xheader,
+			messageBox
 		},
 		watch:{
 			page:function(newVal){

@@ -4,7 +4,7 @@
 <template>
 	<div>
 		<quill-editor 
-			style='height:500;margin-top:20px'
+			style='height:500px;margin-top:20px;padding:20px'
 			v-model="content"
             ref="myQuillEditor"
             :options="editorOption"
@@ -27,23 +27,38 @@
 	export default {
 		data () {
 			return {
-				editorOptions:{
+				// content: null,
+				editorOption:{
+					modules:{
+						toolbar:[
 
+							['bold', 'italic', 'underline', 'strike'],
+			                ['blockquote', 'code-block'],
+			                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+			                [{ 'indent': '-1' }, { 'indent': '+1' }],
+			                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+			                [{ 'font': [] }],
+			                [{ 'color': [] }, { 'background': [] }],
+			                [{ 'align': [] }],
+			                ['link', 'image', ]
+						]
+					}
 				}
 			}
 		},
 
 		props:{
 			content:null,
-		}
+		},
 
 		mounted: function(){
+
 			let self = this;
 			this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image',self.imgHandler);  //修改toolbar中image绑定事件
 		},
 		methods: {
 			onEditorBlur (event) {
-				this.emit('editorBlur',event);
+				this.$emit('editorBlur',event);
 			},
 
 			onEditorFocus (event) {
@@ -51,8 +66,9 @@
 			},
 
 			onEditorReady (event) {
+				this.content = this.propContent;
 				this.$emit('editorReady',event);
-			}
+			},
 
 			onEditorChange (event) {
 				this.$emit('editorChange',this.content);
@@ -82,6 +98,14 @@
 
 		components:{
 			quillEditor,
+		},
+
+		watch:{
+			propContent:function(newVal){
+				if(newVal != null){
+					console.log(propContent);
+				}
+			}
 		}
 		
 	}
