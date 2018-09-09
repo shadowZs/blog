@@ -10,7 +10,7 @@
 						这是个人Blog，项目前端基于Vue来开发，后端采用Koa2，数据库采用Mysql，项目部署于阿里云服务器。<br/>
 						github 地址：
 						<a href='git@github.com:shadowZs/blog.git'>git@github.com:shadowZs/blog.git</a><br/>
-						如有问题，欢迎随时沟通联系。
+						如有问题，欢迎沟通。
 					</div>
 				</div>
 			</div>
