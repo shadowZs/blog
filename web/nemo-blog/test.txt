@@ -1,2 +1,2 @@
-hello master1
-1
+
+hello dev && master
