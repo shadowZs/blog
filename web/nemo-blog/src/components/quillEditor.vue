@@ -100,13 +100,13 @@
 			quillEditor,
 		},
 
-		watch:{
-			propContent:function(newVal){
-				if(newVal != null){
-					console.log(propContent);
-				}
-			}
-		}
+		// watch:{
+		// 	propContent:function(newVal){
+		// 		if(newVal != null){
+		// 			console.log(propContent);
+		// 		}
+		// 	}
+		// }
 		
 	}
 </script>
