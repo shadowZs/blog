@@ -17,6 +17,18 @@ function getToken(){
 // let baseUrl = 'http://116.85.48.142:3000/'; //滴滴云服务器
 let baseUrl = 'http://47.106.171.33:3000/';  //aliyun
 
+
+
+function upload(params){
+	let url = baseUrl + 'upload';
+	return axios({
+		method:'post',
+		url: url,
+		data:params,
+		headers: {'Content-Type':'multipart/form-data'}
+	})
+}
+
 //插入图片
 function addImg(callback){
 	let self = this;
@@ -153,4 +165,5 @@ export default {
 	showLoadding:showLoadding,
 	hideLoadding:hideLoadding,
 	formateDate:formateDate,
+	upload:upload
 }

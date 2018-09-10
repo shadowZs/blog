@@ -39,6 +39,9 @@
 	import addImg from '@/assets/addImg.png';
 	import publicJs from '@/public';
 	import cookie from '@/cookie';
+
+	import upload from '../plugins/upload';
+
 	export default {
 		data () {
 			return {
@@ -57,11 +60,16 @@
 
 			selectImg: function(){
 				let self = this;
-				publicJs.addImg(function(data){
-					if(data.data.code == 0){
-						self.addImg = data.data.message
-					}
-				});
+				// publicJs.addImg(function(data){
+				// 	if(data.data.code == 0){
+				// 		self.addImg = data.data.message
+				// 	}
+				// });
+
+				upload.uploadFile().then(function(data){
+					console.log(data);
+					self.addImg = data.data.message
+				})
 			},
 
 			submitRegister: function(){
