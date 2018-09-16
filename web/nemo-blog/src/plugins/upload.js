@@ -10,6 +10,7 @@ function uploadFile(){
 			let file = this.files[0];
 			let formData = new FormData();
 			formData.append('file',file);
+			
 			publicJs.upload(formData).then(function(data){
 				if(data.data.code == 0){
 					resolve(data);

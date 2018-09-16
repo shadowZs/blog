@@ -41,6 +41,7 @@
 	import cookie from '@/cookie';
 
 	import upload from '../plugins/upload';
+	import {REGISTER, CHOOSEFILE} from '@/api/config';
 
 	export default {
 		data () {
@@ -60,15 +61,11 @@
 
 			selectImg: function(){
 				let self = this;
-				// publicJs.addImg(function(data){
-				// 	if(data.data.code == 0){
-				// 		self.addImg = data.data.message
-				// 	}
-				// });
-
-				upload.uploadFile().then(function(data){
+				CHOOSEFILE(function(data) {
 					console.log(data);
-					self.addImg = data.data.message
+					if(data.data.code == 0){
+						self.addImg = data.data.message;
+					}
 				})
 			},
 
@@ -106,19 +103,15 @@
 					password:this.password,
 					avator: this.addImg
 				})
-				publicJs.ajaxLogin('post',url,params,function(data){
-					console.log(data);
 
-					if(data.data.code == 0){
-						cookie.setCookie('userInfo',JSON.stringify(data.data.data),'max');
-
-						localStorage.setItem('token',data.data.token);
-						location.href = '#/list';
+				REGISTER(params).then( (res) => {
+					if(res.code === 0){
+						localStorage.setItem('token', data.data.token)
 					}else{
 						alert(data.data.message);
 					}
+				})
 
-				}) 	
 			}
 
 
