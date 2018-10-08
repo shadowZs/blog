@@ -42,6 +42,7 @@
 
 	import upload from '../plugins/upload';
 	import {REGISTER, CHOOSEFILE} from '@/api/config';
+  import uploadJs from '@/plugins/upload';
 
 	export default {
 		data () {
@@ -53,20 +54,26 @@
 			}
 		},
 		mounted:function(){
-			let url = publicJs.baseUrl 
-	
+
 		},
 
 		methods:{
-
 			selectImg: function(){
 				let self = this;
-				CHOOSEFILE(function(data) {
-					console.log(data);
-					if(data.data.code == 0){
-						self.addImg = data.data.message;
-					}
-				})
+        uploadJs.uploadFile().then(res => {
+          console.log('res:', res.data, res.data.code);
+          if(res.data.code === 0){
+            self.addImg = res.data.message;
+            console.log(self.addImg);
+          }
+        })
+
+				// CHOOSEFILE(function(data) {
+				// 	console.log(data);
+				// 	if(data.data.code == 0){
+				// 		self.addImg = data.data.message;
+				// 	}
+				// })
 			},
 
 			submitRegister: function(){
@@ -104,17 +111,21 @@
 					avator: this.addImg
 				})
 
-				REGISTER(params).then( (res) => {
-					if(res.code === 0){
-						localStorage.setItem('token', data.data.token)
-					}else{
-						alert(data.data.message);
-					}
-				})
+       publicJs.ajaxRegister('post', url, params, function(data){
+         console.log(data);
+         if(data.data.code === 0){
 
+          localStorage.getItem('token', data,data,data.token);
+           window.location.href = '#/list' ;
+         }
+       })
+
+				// REGISTER(params).then(res => {
+				//   if(res.data.code == 0){
+				//     window.location.href = '#/list';
+        //   }
+        // })
 			}
-
-
 		},
 
 		components:{

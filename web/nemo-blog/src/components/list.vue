@@ -59,6 +59,7 @@
 	import xheader from '@/components/xheader';
 	import messageBox from '@/components/li'
 	import publicJs from '@/public';
+	import {getArticleList} from '@/api/config';
 
 	export default {
 		data () {
@@ -111,31 +112,36 @@
 				}
 
 				let params = JSON.stringify({page:this.page,pageSize:this.pageSize});
-				publicJs.ajaxJSON('post',url,params,function(data){
-					console.log(data);
 
-					if(data.data.code == 0){
-						self.list = data.data.data;
-						self.total = data.data.total;
+        getArticleList(params).then((data) => {
+				  console.log(data);
+        })
 
-						self.totalPage = Math.ceil(self.total / self.pageSize);  
-						self.pageDetail = [];
-						if(self.totalPage >= 5){
-							for(let i = 1; i <= 5 ; i++){
-								self.pageDetail.push(i + self.page);
-							}		
-						}else{
-							for(let i=1; i <= self.totalPage; i++){
-								self.pageDetail.push(i);
-							}
-						}
-
-						self.list.forEach(function(item){
-							item.edit_time = publicJs.formateDate(item.edit_time);
-						})
-					
-					}
-				})
+				// publicJs.ajaxJSON('post',url,params,function(data){
+				// 	console.log(data);
+        //
+				// 	if(data.data.code == 0){
+				// 		self.list = data.data.data;
+				// 		self.total = data.data.total;
+        //
+				// 		self.totalPage = Math.ceil(self.total / self.pageSize);
+				// 		self.pageDetail = [];
+				// 		if(self.totalPage >= 5){
+				// 			for(let i = 1; i <= 5 ; i++){
+				// 				self.pageDetail.push(i + self.page);
+				// 			}
+				// 		}else{
+				// 			for(let i=1; i <= self.totalPage; i++){
+				// 				self.pageDetail.push(i);
+				// 			}
+				// 		}
+        //
+				// 		self.list.forEach(function(item){
+				// 			item.edit_time = publicJs.formateDate(item.edit_time);
+				// 		})
+        //
+				// 	}
+				// })
 
 			},
 

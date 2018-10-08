@@ -2,8 +2,8 @@ const sql = require('../sql/sql');
 const formateDate = require('../formateDate');
 const tokenJs = require('../token');
 // const imgUrl = 'http://116.85.48.142:3000/upload/'; //滴滴云
-const imgUrl = 'http://47.106.171.33:3000/upload/others/'; //阿里云，给shujie配的博客
-// const imgUrl = 'http://localhost:3100/upload/others/';
+// const imgUrl = 'http://47.106.171.33:3000/upload/others/'; //阿里云，给shujie配的博客
+const imgUrl = 'http://localhost:3100/upload/others/';
 
 exports.upload = async (ctx,next) => {
 	let file = ctx.req.file;
@@ -157,7 +157,7 @@ exports.updateArticle = async(ctx,next) => {
 	
 
 }
- 
+
 // 获取文章
 exports.getArticleList = async(ctx,next) =>{
 	let page = ctx.request.body.page;

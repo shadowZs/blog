@@ -4,11 +4,12 @@ import cookie from '../cookie'
 
 axios.interceptors.request.use(function (config) {
 // Do something before request is sent
-	let token = localStorage.getItem('token');
-	if(token){
-		config.headers.token = token;
-	}
+// 	let token = localStorage.getItem('token');
+// 	if(token){
+// 		config.headers.token = token;
+// 	}
 
+  console.log(config);
 return config;
 }, function (error) {
 // Do something with request error
@@ -16,15 +17,15 @@ return Promise.reject(error);
 })
 
 axios.interceptors.response.use(function (response) {
-  	let data = response.data;
 
-  	if(data.code === 0 || data.code === -1 || data.code == 1){
-  		return response;
-  	}
-
+    console.log('response data:', response);
+    return response;
+  	// if(data.code === 0 || data.code === -1 || data.code == 1){
+  	// 	return response;
+  	// }
 
   }, function (err) {
-    
+
   	if(err && err.response){
   		switch(err.response.status){
   			case 400:
@@ -68,9 +69,7 @@ axios.interceptors.response.use(function (response) {
   				break;
   		}
   	}
-
-
-    return Promise.reject(error);
+    return Promise.reject(err);
   });
 
 
@@ -79,8 +78,16 @@ export const GET =  (url,params) => {
 }
 
 export const POST = (url,params) => {
-	return axios.post(url,params).then(res => res.data);
-}
+  return axios({
+    method: 'post',
+    url: url,
+    data: params,
+    headers: {'Content-Type': 'application/json'}
+  }).then( res => res)
+    .catch((err) => {
+      console.log(err);
+    })
+ }
 
 export const POSTFORM = (url,params) => {
 	return axios.post(url,qs.stringify(params)).then(res => res.data);
@@ -94,5 +101,7 @@ export const POSTFILE = (url,params,cb) => {
 		headers: {'Content-type': 'multipart/form-data'}
 	}).then( (res) => {
 		cb(res);
-	})
+	}).catch (err => {
+	  console.log(err);
+  })
 }

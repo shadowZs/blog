@@ -1,7 +1,8 @@
 import {GET, POST, POSTFORM, POSTFILE} from './base.js';
 
-let base = 'http://47.106.171.33:3000/';
+// let base = 'http://47.106.171.33:3000/';
 
+let base = 'http://localhost:3100/';
 // 上传图片
 export const CHOOSEFILE = function(cb){
 	// return new Promise( (resolve,reject) => {
@@ -9,16 +10,15 @@ export const CHOOSEFILE = function(cb){
 		input.type = 'file';
 		input.accept = 'image/*';
 		input.addEventListener('change', function(){
+
 			let file = this.files[0];
 			let formData = new FormData();
 			formData.append('file', file);
+			console.log(file);
 			let url = base + 'upload';
 			
-			POSTFILE(url, formData, cb);
-			
-		// })
+			return POSTFILE(url, formData, cb);
 
-		
 	})
 		
 	input.click();
@@ -34,8 +34,11 @@ export const LOGINS = (params) => {
 
 // 注册
 export const REGISTER = (params) => {
-	let url = base + 'register'
-	return POST(url, params);
+	return POST(`${base}register`, params);
 }
 
-// 
+export const getArticleList = (params) => {
+  return POST(`${base}getArticleList`, params)
+}
+
+

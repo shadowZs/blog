@@ -11,13 +11,15 @@ function uploadFile(){
 			let formData = new FormData();
 			formData.append('file',file);
 			
-			publicJs.upload(formData).then(function(data){
+			return publicJs.upload(formData).then(function(data){
 				if(data.data.code == 0){
 					resolve(data);
 				}else{
 					reject(data);
 				}
-			})
+			}).catch (err => {
+			  console.log(err);
+      })
 
 		})
 

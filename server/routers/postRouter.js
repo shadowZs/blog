@@ -1,7 +1,8 @@
 const router = require('koa-router')();
 const multer = require('koa-multer');
 
-const controller = require('../controllers/postController')
+const controller = require('../controllers/postController');
+const getController = require('../controllers/getController');
 
 let storage = multer.diskStorage({
 	destination: (req,file,cb) => {
@@ -17,6 +18,8 @@ let storage = multer.diskStorage({
 let upload = multer({
 	storage:storage
 })
+
+router.get('/getList', getController.getList);
 
 router.post('/upload',upload.single('file'),controller.upload);
 
@@ -49,5 +52,7 @@ router.post('/chatList',controller.checkChat);
 // router.post('/addChatRoomUser',controller.addChatRoomUser);
 
 // router.post('/deleteChatRoomUser',controller.deleteChatRoomUser);
+
+
 
 module.exports = router;

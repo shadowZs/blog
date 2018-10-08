@@ -9,8 +9,10 @@
   "author": "nemo",
   "license": "ISC",
   "dependencies": {
+    "art-template": "^4.13.1",
     "jsonwebtoken": "^8.3.0",
     "koa": "^2.5.2",
+    "koa-art-template": "^1.1.1",
     "koa-bodyparser": "^4.2.1",
     "koa-cors": "0.0.16",
     "koa-logger": "^3.2.0",
@@ -23,6 +25,7 @@
     "mysql": "^2.15.0",
     "path": "^0.12.7",
     "pm2": "^3.0.3",
+    "request": "^2.88.0",
     "socket.io": "^2.1.1",
     "utf8": "^3.0.0"
   }

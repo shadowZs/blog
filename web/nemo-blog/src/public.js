@@ -11,13 +11,8 @@ function getToken(){
 }
 
 
-
-
-// let baseUrl = 'http://localhost:3100/'
-// let baseUrl = 'http://116.85.48.142:3000/'; //滴滴云服务器
-let baseUrl = 'http://47.106.171.33:3000/';  //aliyun
-
-
+let baseUrl = 'http://localhost:3100/';
+// let baseUrl = 'http://47.106.171.33:3/Z000/';  //aliyun
 
 function upload(params){
 	let url = baseUrl + 'upload';
@@ -26,7 +21,13 @@ function upload(params){
 		url: url,
 		data:params,
 		headers: {'Content-Type':'multipart/form-data'}
-	})
+	}).then(res => {
+	  console.log('uploadRes:', res);
+	  return res;
+  }).catch(err => {
+    console.log(err);
+
+  })
 }
 
 //插入图片
@@ -101,16 +102,27 @@ function ajaxLogin(method,url,params,callback){
 	})
 }
 
+function ajaxRegister(method, url, params, callback){
+  axios({
+    method: method,
+    url: url,
+    data: params,
+    headers: {'Content-Type': 'application/json'}
+  }).then( (data) => {
+    callback(data)
+  }).catch(err => {
+    console.log(err);
+  })
+}
+
+
 
 function showLoadding() {
    let loading = '<div class="res-mask loadding"><div class="dis-table"><div class="dis-tablecell"><div class="loadEffect"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div></div>'
 	let loadingBox = document.createElement('div');
 	loadingBox.className = 'loadingBox';
 	loadingBox.innerHTML = loading;
-
-	// 滚动条应处于当前视图位置，而不是全部页面的
-	// let top = document.documentElement.scrollTop; 
-	// loadingBox.style.top = top + 'px';
+  loadingBox.style.position = 'fixed';;
 	loadingBox.style.top = 0;
 
 	document.body.appendChild(loadingBox);
@@ -131,25 +143,11 @@ function formateDate(val){
 		let m = val.getMinutes();
 		let s = val.getSeconds();
 
-		if(month < 10){
-			month = '0' + month
-		}
-
-		if(date < 10){
-			date = '0' + date;
-		} 
-
-		if(h < 10){
-			h = '0' + h;
-		}
-
-		if(m < 10){
-			m = '0' + m;
-		}
-
-		if(s < 10){
-			s = '0' + s;
-		}
+		month > 9 ? month = month : month = '0' + month;
+    date > 9 ? date = date : date = '0' + date;
+    h > 9 ? h = h : h = '0' + h;
+    m > 9 ? m = m : m = '0' + m;
+    s > 9 ? s = s : s = '0' + s;
 
 		return year + '-' + month + '-' + date + ' ' + h + ':' + m + ':' + s;
 	}
@@ -165,5 +163,6 @@ export default {
 	showLoadding:showLoadding,
 	hideLoadding:hideLoadding,
 	formateDate:formateDate,
-	upload:upload
+	upload:upload,
+  ajaxRegister: ajaxRegister
 }

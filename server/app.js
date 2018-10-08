@@ -18,6 +18,12 @@ app.use(server(path.join(__dirname)));
 const bodyParser = require('koa-bodyparser')();
 app.use(bodyParser);
 
+// 增加art-template模板
+const render = require('koa-art-template');
+render(app, {
+	root: path.join(__dirname, 'art'),
+	extname: '.art'
+})
 
 // 日志
 const logger = require('koa-logger');

@@ -76,33 +76,33 @@
 
 				let url = publicJs.baseUrl + 'login';
 				let params = JSON.stringify({userName:this.userName,password:this.password});
-				// publicJs.ajaxLogin('post',url,params,function(data){
-				// 	console.log(data);
-				// 	if(data.data.code == 0){
-				// 		cookie.setCookie('userInfo',JSON.stringify(data.data.data),'max');
-				// 		let token = data.data.token;
-
-				// 		localStorage.setItem('token',token);
-				// 		location.href = '#/list';
-
-				// 	}else{
-				// 		alert(data.data.message);
-				// 	}
-				// })
-
-
-				LOGINS(params).then( function(data){
+				publicJs.ajaxLogin('post',url,params,function(data){
 					console.log(data);
-					// if( data.code === 0){
-					// 	cookie.setCookie('userInfo',JSON.stringify(data.data.data),'max');
-					// 	let token = data.data.token;
-					// 	localStorage.setItem('token',token);
-					// 	location.href = '#/list';
-					// }else{
-					// 	alert(data.data.message);
-					// }
+					if(data.data.code == 0){
+						cookie.setCookie('userInfo',JSON.stringify(data.data.data),'max');
+						let token = data.data.token;
 
-				})	
+						localStorage.setItem('token',token);
+						location.href = '#/list';
+
+					}else{
+						alert(data.data.message);
+					}
+				})
+
+
+				// LOGINS(params).then( function(data){
+				// 	console.log(data);
+				// 	// if( data.code === 0){
+				// 	// 	cookie.setCookie('userInfo',JSON.stringify(data.data.data),'max');
+				// 	// 	let token = data.data.token;
+				// 	// 	localStorage.setItem('token',token);
+				// 	// 	location.href = '#/list';
+				// 	// }else{
+				// 	// 	alert(data.data.message);
+				// 	// }
+        //
+				// })
 
 			}
 		},

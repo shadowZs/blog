@@ -1,0 +1,6 @@
+<div>
+    this is a list
+</div>
+{{each pageList as li i}}
+    <div data-index="{{i}}">{{li}}</div>
+{{/each}}

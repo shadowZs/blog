@@ -75,9 +75,9 @@
 			let self = this;
 
 			// this.socket = io();  //如果没有指向url,默认会连接当前页面的主机
-			// this.socket = io('http://localhost:3101');
+			this.socket = io('http://localhost:3101');
 
-			this.socket = io('http://47.106.171.33:3101');  //阿里云
+			//this.socket = io('http://47.106.171.33:3101');  //阿里云
 		
 			this.socket.on('message',function(message){
 				self.receiveMessage(message);
@@ -104,24 +104,19 @@
 			window.addEventListener('keyup',function(e){
 				// console.log('code:',e.keyCode);
 
-				if(e.keyCode == 13 && i == 0){
+				if(e.keyCode === 13 && i == 0){
 					self.send();
 					i ++;
 
 					setTimeout(function(){
 						i = 0;
 					},1500)
-
 				}
-
 			})
-
-			
 		},
 
 		methods:{
 			getUserInfo: function(){
-
 				let userInfo = cookie.getCookie('userInfo'); console.log(userInfo);
 				if(userInfo){
 					userInfo = JSON.parse(userInfo);
